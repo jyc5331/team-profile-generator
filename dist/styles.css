@@ -1,0 +1,18 @@
+#header {
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding: 30px;
+}
+
+.team-cards {
+  margin: 10px;
+  flex: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.team-card {
+  display: block;
+  min-width: 20%;
+  width: auto;
+}

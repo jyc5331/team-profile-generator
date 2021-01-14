@@ -15,4 +15,15 @@
   display: block;
   min-width: 20%;
   width: auto;
+  padding: 0px;
+}
+
+.card-top {
+  background-color: #0277f7;
+  color: white;
+}
+
+.internal-list {
+  width: auto;
+  /* figure out how to make these boxes display center and take up about 80% of the parent element  */
 }

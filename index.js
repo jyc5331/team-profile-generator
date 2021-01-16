@@ -2,6 +2,7 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const Employee = require("./lib/Employee");
 const validator = require("email-validator");
+const { writeFile, copyFile } = require("./lib/generate-site.js");
 
 const promptUserBasic = () => {
   return inquirer.prompt([
@@ -83,7 +84,7 @@ const promptUserManager = (managerAnswers) => {
     },
   ]);
 };
-
+//HELP should the data from these be pushed onto the respective objects?
 const promptUserEngineer = (engineerAnswers) => {
   return inquirer.prompt([
     {

@@ -1,8 +1,11 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Intern = require("./lib/Intern");
+const Engineer = require("./lib/Engineer");
 const validator = require("email-validator");
-const { writeFile, copyFile } = require("./lib/generate-site.js");
+const { writeFile, copyFile } = require("./utils/generate-site.js");
 
 const promptUserBasic = () => {
   return inquirer.prompt([
@@ -53,11 +56,17 @@ const promptUserBasic = () => {
       message:
         "What is your role? Please enter one of the following: Manager, Engineer, or Intern(Required)",
       validate: (roleInput) => {
-        if (roleInput === "Manager" || "Engineer" || "Intern") {
-          //place the function that runs the other function here
+        if (roleInput === "Manager") {
+          promptUserManager();
           return true;
+        } else if (roleInput === "Engineer") {
+          promptUserEngineer();
+        } else if (roleInput === "Intern") {
+          promptUserIntern();
         } else {
-          console.log("Please enter your name");
+          console.log(
+            "Please enter one of the following: Manager, Engineer, Intern"
+          );
           return false;
         }
       },

@@ -5,95 +5,108 @@ const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
 const Engineer = require("./lib/Engineer");
 const validator = require("email-validator");
-const { writeFile, copyFile } = require("./utils/generate-site.js");
+const generateHTML = require("./utils/generateHTML");
+const employees = [];
 
+//have promptuserbasic be one function that leads to other functions
 const promptUserBasic = () => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "name",
-      message: "What is your name? (Required)",
-      validate: (nameInput) => {
-        if (nameInput) {
-          return true;
-        } else {
-          console.log("Please enter your name");
-          return false;
-        }
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "role",
+        message:
+          "What is your role? Please select one of the following: Manager, Engineer, or Intern(Required)",
+        choices: ["Manager", "Engineer", "Intern", "Quit"],
       },
-    },
-    {
-      type: "input",
-      name: "id",
-      message: "What is your ID number? (Required)",
-      validate: (idInput) => {
-        if ((idInput = Number)) {
-          return true;
-        } else {
-          console.log("Please enter a valid number");
-          return false;
-        }
-      },
-    },
-    {
-      type: "input",
-      name: "email",
-      message: "What is your email address? (Required)",
-      validate: (emailInput) => {
-        //HELP this isn't actually working
-        validator.validate(emailInput);
-        if (emailInput) {
-          return true;
-        } else {
-          console.log("Please enter a valid email address");
-          return false;
-        }
-      },
-    },
-    {
-      type: "input",
-      name: "role",
-      message:
-        "What is your role? Please enter one of the following: Manager, Engineer, or Intern(Required)",
-      validate: (roleInput) => {
-        if (roleInput === "Manager") {
-          promptUserManager();
-          return true;
-        } else if (roleInput === "Engineer") {
-          promptUserEngineer();
-        } else if (roleInput === "Intern") {
-          promptUserIntern();
-        } else {
-          console.log(
-            "Please enter one of the following: Manager, Engineer, Intern"
-          );
-          return false;
-        }
-      },
-    },
-    //run an inquirer here asking if they want to add another employee, if true loop, if false run generateHTML
-    //either way (T/F) call a function that creates an object for the employee using the appopriate class, employee + i
-  ]);
+      //either way (T/F) call a function that creates an object for the employee using the appopriate class, employee + i
+    ])
+    .then(function (data) {
+      console.log(data);
+      if (data.role === "Manager") {
+        return promptUserManager();
+      }
+      if (data.role === "Engineer") {
+        return promptUserEngineer();
+      }
+      if (data.role === "Intern") {
+        return promptUserIntern();
+      }
+      if (data.role === "Quit") {
+        generateHTML(employees);
+      }
+    });
 };
-
 const promptUserManager = (managerAnswers) => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "office",
-      message: "What is your office number? (Required)",
-      validate: (officeInput) => {
-        if ((officeInput = Number)) {
-          return true;
-        } else {
-          console.log("Please enter your office number");
-          return false;
-        }
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is your name? (Required)",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter your name");
+            return false;
+          }
+        },
       },
-    },
-  ]);
+      {
+        type: "input",
+        name: "id",
+        message: "What is your ID number? (Required)",
+        validate: (idInput) => {
+          if (!isNaN(idInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid number");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is your email address? (Required)",
+        validate: (emailInput) => {
+          //HELP this isn't actually working
+          if (validator.validate(emailInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid email address");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "office",
+        message: "What is your office number? (Required)",
+        validate: (officeInput) => {
+          if (!isNaN(officeInput)) {
+            return true;
+          } else {
+            console.log("Please enter your office number");
+            return false;
+          }
+        },
+      },
+    ])
+    .then(function (managerData) {
+      console.log(managerData);
+      const newEmployee = new Manager(
+        managerData.name,
+        managerData.id,
+        managerData.email,
+        managerData.office
+      );
+      console.log(newEmployee);
+      employees.push(newEmployee);
+      promptUserBasic();
+    });
 };
-//HELP should the data from these be pushed onto the respective objects?
 const promptUserEngineer = (engineerAnswers) => {
   return inquirer.prompt([
     {
@@ -144,10 +157,9 @@ const promptUserIntern = (internAnswers) => {
 // `;
 // }
 // console.log(html);
+console.log(employees);
 
-promptUserBasic().then((answers) => {
-  console.log(answers);
-  // fs.writeFile("newreadme.md", genmd(answers), (err) => {
-  //   if (err) throw err;
-  // });
-});
+promptUserBasic();
+//.then generateHTML
+//.then write file
+//.then copy file

@@ -2,7 +2,6 @@ const { expect } = require("@jest/globals");
 
 const Employee = require("../lib/Employee");
 
-// test module takes in two parameters... a description of the test, and the call back function to run the test
 test("Employee object created", () => {
   const employee = new Employee("Joe", 1, "example@gmail.com");
 

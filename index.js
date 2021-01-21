@@ -8,7 +8,6 @@ const validator = require("email-validator");
 const generateHTML = require("./utils/generateHTML");
 const employees = [];
 
-//have promptuserbasic be one function that leads to other functions
 const promptUserBasic = () => {
   inquirer
     .prompt([
@@ -19,7 +18,6 @@ const promptUserBasic = () => {
           "What is the employee's role? Please select one of the following: Manager, Engineer, or Intern(Required)",
         choices: ["Manager", "Engineer", "Intern", "Quit"],
       },
-      //either way (T/F) call a function that creates an object for the employee using the appopriate class, employee + i
     ])
     .then(function (data) {
       console.log(data);
@@ -37,6 +35,7 @@ const promptUserBasic = () => {
       }
     });
 };
+
 const promptUserManager = (managerAnswers) => {
   return inquirer
     .prompt([
@@ -223,8 +222,8 @@ const promptUserIntern = (internAnswers) => {
         type: "input",
         name: "school",
         message: "What is the employee's school? (Required)",
-        validate: (githubInput) => {
-          if (githubInput != "") {
+        validate: (schoolInput) => {
+          if (schoolInput != "") {
             return true;
           } else {
             console.log("Please enter the employee's school");
@@ -246,24 +245,5 @@ const promptUserIntern = (internAnswers) => {
       promptUserBasic();
     });
 };
-// const Bob = new Employee("Bob", 1, "example1@gmail.com");
-// const Karen = new Employee("Karen", 2, "example2@gmail.com");
-// const Jan = new Employee("Jan", 3, "example3@gmail.com");
-
-// const employees = [Bob, Karen, Jan];
-// let html = "";
-
-// for (let i = 0; i < employees.length; i++) {
-//   html += `Name: ${employees[i].getName()}
-// Role: ${employees[i].getRole()}
-// ID: ${employees[i].getId()}
-// Email: ${employees[i].getEmail()}
-// `;
-// }
-// console.log(html);
-console.log(employees);
 
 promptUserBasic();
-//.then generateHTML
-//.then write file
-//.then copy file

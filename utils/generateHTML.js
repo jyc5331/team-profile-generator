@@ -17,8 +17,7 @@ function generateHTML(employeesArray) {
     <div class="row">
 `;
   for (const item of employeesArray) {
-    console.log(item);
-    `
+    generatedHTML += `
         <div class="col-4">
         <div class="card team-cards" style="width: 18rem;">
             <div class="card-body team-card">
@@ -45,8 +44,6 @@ function generateHTML(employeesArray) {
                     ? `School ${item.getSchool()}`
                     : ""
                 }
-                //!!!!!! do this for each class
-                empl/Github eng/School intern:</li>
               </ul>
             </div>
           </div>

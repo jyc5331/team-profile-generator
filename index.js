@@ -16,7 +16,7 @@ const promptUserBasic = () => {
         type: "list",
         name: "role",
         message:
-          "What is your role? Please select one of the following: Manager, Engineer, or Intern(Required)",
+          "What is the employee's role? Please select one of the following: Manager, Engineer, or Intern(Required)",
         choices: ["Manager", "Engineer", "Intern", "Quit"],
       },
       //either way (T/F) call a function that creates an object for the employee using the appopriate class, employee + i
@@ -43,12 +43,12 @@ const promptUserManager = (managerAnswers) => {
       {
         type: "input",
         name: "name",
-        message: "What is your name? (Required)",
+        message: "What is the employee's name? (Required)",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
           } else {
-            console.log("Please enter your name");
+            console.log("Please enter the employee's name");
             return false;
           }
         },
@@ -56,7 +56,7 @@ const promptUserManager = (managerAnswers) => {
       {
         type: "input",
         name: "id",
-        message: "What is your ID number? (Required)",
+        message: "What is the employee's ID number? (Required)",
         validate: (idInput) => {
           if (!isNaN(idInput)) {
             return true;
@@ -69,9 +69,8 @@ const promptUserManager = (managerAnswers) => {
       {
         type: "input",
         name: "email",
-        message: "What is your email address? (Required)",
+        message: "What is the employee's email address? (Required)",
         validate: (emailInput) => {
-          //HELP this isn't actually working
           if (validator.validate(emailInput)) {
             return true;
           } else {
@@ -83,12 +82,12 @@ const promptUserManager = (managerAnswers) => {
       {
         type: "input",
         name: "office",
-        message: "What is your office number? (Required)",
+        message: "What is the employee's office number? (Required)",
         validate: (officeInput) => {
           if (!isNaN(officeInput)) {
             return true;
           } else {
-            console.log("Please enter your office number");
+            console.log("Please enter the employee's office number");
             return false;
           }
         },
@@ -107,22 +106,75 @@ const promptUserManager = (managerAnswers) => {
       promptUserBasic();
     });
 };
+
 const promptUserEngineer = (engineerAnswers) => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "office",
-      message: "What is your github username? (Required)",
-      validate: (githubInput) => {
-        if (githubInput != "") {
-          return true;
-        } else {
-          console.log("Please enter your github username");
-          return false;
-        }
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the employee's name? (Required)",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the employee's name");
+            return false;
+          }
+        },
       },
-    },
-  ]);
+      {
+        type: "input",
+        name: "id",
+        message: "What is the employee's ID number? (Required)",
+        validate: (idInput) => {
+          if (!isNaN(idInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid number");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is the employee's email address? (Required)",
+        validate: (emailInput) => {
+          if (validator.validate(emailInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid email address");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "github",
+        message: "What is the employee's github username? (Required)",
+        validate: (githubInput) => {
+          if (githubInput != "") {
+            return true;
+          } else {
+            console.log("Please enter the employee's github username");
+            return false;
+          }
+        },
+      },
+    ])
+    .then(function (engineerData) {
+      console.log(engineerData);
+      const newEmployee = new Manager(
+        engineerData.name,
+        engineerData.id,
+        engineerData.email,
+        engineerData.github
+      );
+      console.log(newEmployee);
+      employees.push(newEmployee);
+      promptUserBasic();
+    });
 };
 
 const promptUserIntern = (internAnswers) => {

@@ -165,7 +165,7 @@ const promptUserEngineer = (engineerAnswers) => {
     ])
     .then(function (engineerData) {
       console.log(engineerData);
-      const newEmployee = new Manager(
+      const newEmployee = new Engineer(
         engineerData.name,
         engineerData.id,
         engineerData.email,
@@ -178,21 +178,73 @@ const promptUserEngineer = (engineerAnswers) => {
 };
 
 const promptUserIntern = (internAnswers) => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "school",
-      message: "What is your the name of your school? (Required)",
-      validate: (schoolInput) => {
-        if (schoolInput != "") {
-          return true;
-        } else {
-          console.log("Please enter your school name");
-          return false;
-        }
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the employee's name? (Required)",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the employee's name");
+            return false;
+          }
+        },
       },
-    },
-  ]);
+      {
+        type: "input",
+        name: "id",
+        message: "What is the employee's ID number? (Required)",
+        validate: (idInput) => {
+          if (!isNaN(idInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid number");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is the employee's email address? (Required)",
+        validate: (emailInput) => {
+          if (validator.validate(emailInput)) {
+            return true;
+          } else {
+            console.log("Please enter a valid email address");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "school",
+        message: "What is the employee's school? (Required)",
+        validate: (githubInput) => {
+          if (githubInput != "") {
+            return true;
+          } else {
+            console.log("Please enter the employee's school");
+            return false;
+          }
+        },
+      },
+    ])
+    .then(function (internData) {
+      console.log(internData);
+      const newEmployee = new Intern(
+        internData.name,
+        internData.id,
+        internData.email,
+        internData.school
+      );
+      console.log(newEmployee);
+      employees.push(newEmployee);
+      promptUserBasic();
+    });
 };
 // const Bob = new Employee("Bob", 1, "example1@gmail.com");
 // const Karen = new Employee("Karen", 2, "example2@gmail.com");
